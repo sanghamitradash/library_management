@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -28,5 +31,22 @@ public class BookServiceImpl implements BookService {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed");
         }
+    }
+
+    @Override
+    public List<Book> findAll(){
+        return bookRepository.findAll();
+    }
+
+    @Override
+    public ResponseEntity<Book> findBookById(Long id){
+        Optional<Book> book = bookRepository.findById(id);
+        if(book.isPresent()){
+            return ResponseEntity.ok(book.get());
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
     }
 }

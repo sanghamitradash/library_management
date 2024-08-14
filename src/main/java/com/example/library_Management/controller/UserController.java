@@ -8,6 +8,8 @@ import com.example.library_Management.entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/library")
 public class UserController {
@@ -23,5 +25,15 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody User user){
          return userService.findByMobileNumber(user);
+    }
+
+    @GetMapping("/getAllUsers")
+    public List<User> getAllUsers(){
+        return userService.findAll();
+    }
+
+    @GetMapping("/getUserById/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id){
+        return userService.getUserById(id);
     }
 }

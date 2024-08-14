@@ -3,12 +3,13 @@ package com.example.library_Management.serviceImpl;
 import com.example.library_Management.repository.UserRepository;
 import com.example.library_Management.service.UserService;
 import com.example.library_Management.entity.User;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -64,6 +65,21 @@ public class userServiceImpl implements UserService {
         } else {
             System.out.println("User not found with mobile number: " + user.getMobileNumber());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+        }
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public ResponseEntity<User> getUserById(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(optionalUser.isPresent()){
+            return ResponseEntity.ok(optionalUser.get());
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }
